@@ -1,4 +1,5 @@
 import speech_recognition as sr
+import subprocess
 r = sr.Recognizer()
 
 mic = sr.Microphone()
@@ -7,7 +8,9 @@ with mic as source:
     r.adjust_for_ambient_noise(source)
     try:
         audio = r.listen(source)
+        print(r.recognize_sphinx(audio))
         if (r.recognize_sphinx(audio)) == ('mute'):
+            subprocess.call(['osascript', '-e', 'set volume 0'])
             print("volume muted")
     except sr.UnknownValueError:
         print("Sphinx could not understand audio")
